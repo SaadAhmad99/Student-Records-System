@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Form</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 30px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            color: #243b55;
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        input {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        button, .btn {
+            padding: 11px 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+        }
+
+        .primary {
+            background: #2563eb;
+        }
+
+        .secondary {
+            background: #64748b;
+        }
+
+        .note {
+            color: #64748b;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1 th:text="${pageTitle}">Student Form</h1>
+
+    <form th:object="${student}"
+          th:action="${student.regNo == null or student.regNo == ''} ?
+                     @{/students} :
+                     @{/students/{regNo}/update(regNo=${student.regNo})}"
+          method="post">
+
+        <div class="form-group">
+
+            <label for="regNo">Registration Number</label>
+
+            <input type="text"
+                   id="regNo"
+                   th:field="*{regNo}"
+                   placeholder="Example: REG-2026-009"
+                   required
+                   th:readonly="${student.regNo != null and student.regNo != ''}">
+
+            <div class="note">
+                Registration number cannot be changed when editing.
+            </div>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="name">Student Name</label>
+
+            <input type="text"
+                   id="name"
+                   th:field="*{name}"
+                   placeholder="Enter student name"
+                   required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="department">Department</label>
+
+            <input type="text"
+                   id="department"
+                   th:field="*{department}"
+                   placeholder="Example: CS, SE, AI, DS"
+                   required>
+
+        </div>
+
+        <div class="form-group">
+
+            <label for="cgpa">CGPA</label>
+
+            <input type="number"
+                   id="cgpa"
+                   th:field="*{cgpa}"
+                   placeholder="Enter CGPA"
+                   min="0"
+                   max="4"
+                   step="0.01"
+                   required>
+
+            <div class="note">
+                CGPA must be between 0.00 and 4.00.
+            </div>
+
+        </div>
+
+        <div class="actions">
+
+            <button type="submit" class="primary">
+                Save Student
+            </button>
+
+            <a th:href="@{/students}" class="btn secondary">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+</html>
